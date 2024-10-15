@@ -1,0 +1,45 @@
+<div class="container">
+    <h2>Task Manager</h2>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="title">Title</label>
+            <input id="title" formControlName="title">
+            <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">Title is required</div>
+        </div>
+
+        <div>
+            <label for="description">Description</label>
+            <input id="description" formControlName="description">
+        </div>
+
+        <div>
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+                <option value="OPEN">OPEN</option>
+                <option value="IN_PROGRESS">IN PROGRESS</option>
+                <option value="DONE">DONE</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="dueDate">Due Date</label>
+            <input id="dueDate" formControlName="dueDate" type="date">
+            <div *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">Due date is required</div>
+        </div>
+
+        <button type="submit" [disabled]="taskForm.invalid">{{ editMode ? 'Update' : 'Create' }} Task</button>
+        <button type="button" *ngIf="editMode" (click)="cancelEdit()">Cancel</button>
+    </form>
+
+    <hr>
+
+    <h3>Task List</h3>
+    <ul>
+        <li *ngFor="let task of tasks">
+            <strong>{{ task.title }}</strong> ({{ task.status }} - Due: {{ task.dueDate }})
+            <button (click)="editTask(task)">Edit</button>
+            <button (click)="deleteTask(task.id!)">Delete</button>
+        </li>
+    </ul>
+</div>
